@@ -1,10 +1,17 @@
 package com.chea.blablacar.technicaltest;
 
-import com.chea.blablacar.technicaltest.model.lawn.Lawn;
 import com.chea.blablacar.technicaltest.model.mower.Direction;
-import com.chea.blablacar.technicaltest.model.mower.Mower;
+import com.chea.blablacar.technicaltest.model.mower.Machine;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,79 +19,41 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TechnicalTest {
 
     @Test
-    public void testSingleMower1() throws InterruptedException {
+    public void testSingleMower1() throws InterruptedException, URISyntaxException, IOException {
 
-        Lawn lawn = new Lawn(5, 5);
-        int maxX = 5;
-        int maxY = 5;
-        Boolean[][] grid = new Boolean[maxX + 1][maxY + 1];
-        for (int i = 0; i <= maxX; i++) {
-            for (int j = 0; j <= maxY; j++) {
-                grid[i][j] = false;
-            }
-        }
+        URL systemResource = ClassLoader.getSystemResource("SingleMower1.txt");
+        List<String> inputs = Files.lines(Paths.get(systemResource.toURI())).collect(Collectors.toList());
+        ContextHolder context = ContextHolderBuilder.buildFromInput(inputs);
+        context.start();
+        Machine machine = context.getMachineThreadWrappers().get(0).getMachine();
+        assertEquals(1, machine.getX());
+        assertEquals(3, machine.getY());
+        assertEquals(Direction.N, machine.getDirection());
 
-        Mower mower = new Mower(1, 2, Direction.N, "LFLFLFLFF", lawn);
-        Thread t = new Thread(mower, "Mower");
-        t.start();
-
-        Thread.sleep(1000);
-
-        assertEquals(1, mower.getX());
-        assertEquals(3, mower.getY());
-        assertEquals(Direction.N, mower.getDirection());
     }
 
     @Test
-    public void testSingleMower2() throws InterruptedException {
+    public void testSingleMower2() throws InterruptedException, URISyntaxException, IOException {
 
-        Lawn lawn = new Lawn(5, 5);
+        URL systemResource = ClassLoader.getSystemResource("SingleMower2.txt");
+        List<String> inputs = Files.lines(Paths.get(systemResource.toURI())).collect(Collectors.toList());
+        ContextHolder context = ContextHolderBuilder.buildFromInput(inputs);
+        context.start();
+        Machine machine = context.getMachineThreadWrappers().get(0).getMachine();
 
-        int maxX = 5;
-        int maxY = 5;
-        Boolean[][] grid = new Boolean[maxX + 1][maxY + 1];
-        for (int i = 0; i <= maxX; i++) {
-            for (int j = 0; j <= maxY; j++) {
-                grid[i][j] = false;
-            }
-        }
-
-        Mower mower = new Mower(3, 3, Direction.E, "FFRFFRFRRF", lawn);
-        Thread t = new Thread(mower, "Mower");
-        t.start();
-
-        Thread.sleep(1000);
-
-        assertEquals(1, mower.getX());
-        assertEquals(1, mower.getY());
-        assertEquals(Direction.E, mower.getDirection());
+        assertEquals(1, machine.getX());
+        assertEquals(1, machine.getY());
+        assertEquals(Direction.E, machine.getDirection());
     }
 
     @Test
-    public void test() throws InterruptedException {
+    public void test() throws InterruptedException, URISyntaxException, IOException {
 
-        Lawn lawn = new Lawn(5, 5);
-
-        int maxX = 5;
-        int maxY = 5;
-        Boolean[][] grid = new Boolean[maxX + 1][maxY + 1];
-        for (int i = 0; i <= maxX; i++) {
-            for (int j = 0; j <= maxY; j++) {
-                grid[i][j] = false;
-            }
-        }
-
-        Mower mower1 = new Mower(1, 2, Direction.N, "LFLFLFLFF", lawn);
-        Mower mower2 = new Mower(3, 3, Direction.E, "FFRFFRFRRF", lawn);
-
-        Thread t1 = new Thread(mower1, "Mower1");
-        Thread t2 = new Thread(mower2, "Mower2");
-        t1.start();
-        t2.start();
-        t1.join();
-        t2.join();
-
-        Thread.sleep(1000);
+        URL systemResource = ClassLoader.getSystemResource("MultipleMowers1.txt");
+        List<String> inputs = Files.lines(Paths.get(systemResource.toURI())).collect(Collectors.toList());
+        ContextHolder context = ContextHolderBuilder.buildFromInput(inputs);
+        context.start();
+        Machine machine = context.getMachineThreadWrappers().get(0).getMachine();
 
     }
 

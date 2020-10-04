@@ -2,18 +2,20 @@ package com.chea.blablacar.technicaltest.model.mower;
 
 public interface Machine {
 
-    void turnRight();
-
-    void turnLeft();
+    void turn(Move move);
 
     void moveForward();
 
-    void computeNextX();
+    int computeNextX();
 
-    void computeNextY();
+    int computeNextY();
 
-    void getX();
+    int getX();
 
-    void getY();
+    int getY();
+
+    Direction getDirection();
+
+    String getFinalPosition();
 
 }
