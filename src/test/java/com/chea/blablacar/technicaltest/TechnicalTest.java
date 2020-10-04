@@ -5,27 +5,17 @@ import com.chea.blablacar.technicaltest.model.mower.Machine;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class TechnicalTest {
 
     @Test
-    public void testSingleMower1() throws InterruptedException, URISyntaxException, IOException {
+    public void testSingleMower1() {
 
-        URL systemResource = ClassLoader.getSystemResource("SingleMower1.txt");
-        List<String> inputs = Files.lines(Paths.get(systemResource.toURI())).collect(Collectors.toList());
-        ContextHolder context = ContextHolderBuilder.buildFromInput(inputs);
-        context.start();
+        ContextHolder context = TestFileRunner.runTest("SingleMower1.txt");
         Machine machine = context.getMachineThreadWrappers().get(0).getMachine();
+
         assertEquals(1, machine.getX());
         assertEquals(3, machine.getY());
         assertEquals(Direction.N, machine.getDirection());
@@ -33,12 +23,9 @@ public class TechnicalTest {
     }
 
     @Test
-    public void testSingleMower2() throws InterruptedException, URISyntaxException, IOException {
+    public void testSingleMower2() {
 
-        URL systemResource = ClassLoader.getSystemResource("SingleMower2.txt");
-        List<String> inputs = Files.lines(Paths.get(systemResource.toURI())).collect(Collectors.toList());
-        ContextHolder context = ContextHolderBuilder.buildFromInput(inputs);
-        context.start();
+        ContextHolder context = TestFileRunner.runTest("SingleMower2.txt");
         Machine machine = context.getMachineThreadWrappers().get(0).getMachine();
 
         assertEquals(1, machine.getX());
@@ -47,13 +34,20 @@ public class TechnicalTest {
     }
 
     @Test
-    public void test() throws InterruptedException, URISyntaxException, IOException {
+    public void testMultipleMowers() {
 
-        URL systemResource = ClassLoader.getSystemResource("MultipleMowers1.txt");
-        List<String> inputs = Files.lines(Paths.get(systemResource.toURI())).collect(Collectors.toList());
-        ContextHolder context = ContextHolderBuilder.buildFromInput(inputs);
-        context.start();
-        Machine machine = context.getMachineThreadWrappers().get(0).getMachine();
+        ContextHolder context = TestFileRunner.runTest("MultipleMowers1.txt");
+
+        Machine machine1 = context.getMachineThreadWrappers().get(0).getMachine();
+        Machine machine2 = context.getMachineThreadWrappers().get(1).getMachine();
+
+        assertEquals(1, machine1.getX());
+        assertEquals(3, machine1.getY());
+        assertEquals(Direction.N, machine1.getDirection());
+
+        assertEquals(5, machine2.getX());
+        assertEquals(1, machine2.getY());
+        assertEquals(Direction.E, machine2.getDirection());
 
     }
 
