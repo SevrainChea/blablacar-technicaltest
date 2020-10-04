@@ -5,19 +5,18 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Data
 @Slf4j
-public class Mower implements Runnable {
+public class Mower implements Machine {
 
     private int x;
     private int y;
     private Direction direction;
     private List<Move> moves;
 
-    private final Lawn lawn;
+    private Lawn lawn;
 
     public Mower(int x, int y, Direction direction, String moves, Lawn lawn) {
         this.x = x;
@@ -39,31 +38,6 @@ public class Mower implements Runnable {
         }
 
         return moves;
-    }
-
-    @Override
-    public void run() {
-
-        String name = Thread.currentThread().getName();
-
-        log.info("Starting mower " + name);
-        log.info(moves.toString());
-        Iterator<Move> it = moves.iterator();
-
-        while (it.hasNext()) {
-            Move move = it.next();
-            switch (move) {
-                case L:
-                case R:
-                    this.turn(move, name);
-                case F: {
-                    this.moveForward(name);
-                }
-            }
-
-        }
-
-        log.info(name + " final position : " + this.getFinalPosition());
     }
 
     private void turn(Move move, String name) {
@@ -125,4 +99,28 @@ public class Mower implements Runnable {
         return this.getCurrentPosition() + " " + this.direction;
     }
 
+    @Override
+    public void turnRight() {
+
+    }
+
+    @Override
+    public void turnLeft() {
+
+    }
+
+    @Override
+    public void moveForward() {
+
+    }
+
+    @Override
+    public void computeNextX() {
+
+    }
+
+    @Override
+    public void computeNextY() {
+
+    }
 }
