@@ -10,7 +10,7 @@ This project is a technical test for the BlaBlaCar company.
 ## Known Issues
 
 State machines work fine for one mower in the input file.
-Problems with synchronizing several mowers using threads. Seems like once a thread aqcuires lock on the Lawn object, it only releases it after comleting all its moves...
+Problems with synchronizing several mowers using threads. Seems like once a thread aqcuires lock on the Lawn object, it only releases it after completing all its moves...
 
 ## TODO / Going further
 
